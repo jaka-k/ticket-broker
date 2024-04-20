@@ -1,6 +1,4 @@
 <script>
-  import '../app.css';
-
   // Prop to accept an event handler
   export let onClick = () => {}; 
   export let label = 'Click me';

@@ -2,6 +2,8 @@
   "$schema": "https://json.schemastore.org/tsconfig",
   "display": "Svelte Kit",
   "extends": "./base.json",
+  "include": ["src/**/*"],
+  "exclude": ["node_modules/*", "vite.config.js", "svelte.config.js"],
   "compilerOptions": {
 		"allowJs": true,
 		"checkJs": true,

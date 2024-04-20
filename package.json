@@ -10,6 +10,7 @@
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
+    "@ticket-broker/ui": "workspace:*",
     "prettier": "^3.2.5",
     "turbo": "latest"
   },

@@ -3,9 +3,11 @@
   "version": "0.0.1",
   "private": true,
   "exports": {
-    ".": "./src/lib/index.js"
+    ".": {
+      "svelte": "./src/lib/index.ts"
+    },
+    "./styles": "./src/lib/app.css" 
   },
-  "svelte": "./src/lib/index.js",
   "scripts": {
     "dev": "vite dev",
     "build": "vite build",
@@ -17,6 +19,8 @@
     "@sveltejs/adapter-auto": "^3.0.0",
     "@sveltejs/kit": "^2.0.0",
     "@sveltejs/vite-plugin-svelte": "^3.0.0",
+    "@repo/eslint-config": "workspace:*",
+    "@repo/typescript-config": "workspace:*",
     "autoprefixer": "^10.4.19",
     "daisyui": "^4.10.2",
     "postcss": "^8.4.38",
