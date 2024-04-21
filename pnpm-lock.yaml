@@ -86,6 +86,9 @@ importers:
       '@sveltejs/vite-plugin-svelte':
         specifier: ^3.0.0
         version: 3.1.0(svelte@4.2.15)(vite@5.2.9(@types/node@20.11.24))
+      '@ticket-broker/core':
+        specifier: workspace:*
+        version: link:../../packages/core
       svelte:
         specifier: ^4.2.7
         version: 4.2.15
@@ -119,6 +122,9 @@ importers:
       '@sveltejs/vite-plugin-svelte':
         specifier: ^3.0.0
         version: 3.1.0(svelte@4.2.15)(vite@5.2.9(@types/node@20.11.24))
+      '@ticket-broker/core':
+        specifier: workspace:*
+        version: link:../../packages/core
       svelte:
         specifier: ^4.2.7
         version: 4.2.15
@@ -152,6 +158,9 @@ importers:
       '@sveltejs/vite-plugin-svelte':
         specifier: ^3.0.0
         version: 3.1.0(svelte@4.2.15)(vite@5.2.9(@types/node@20.11.24))
+      '@ticket-broker/core':
+        specifier: workspace:*
+        version: link:../../packages/core
       svelte:
         specifier: ^4.2.7
         version: 4.2.15
@@ -226,39 +235,6 @@ importers:
         version: 5.3.3
 
   packages/typescript-config: {}
-
-  packages/ui:
-    devDependencies:
-      '@repo/eslint-config':
-        specifier: workspace:*
-        version: link:../eslint-config
-      '@repo/typescript-config':
-        specifier: workspace:*
-        version: link:../typescript-config
-      '@sveltejs/adapter-auto':
-        specifier: ^3.0.0
-        version: 3.2.0(@sveltejs/kit@2.5.6(@sveltejs/vite-plugin-svelte@3.1.0(svelte@4.2.15)(vite@5.2.9(@types/node@20.11.24)))(svelte@4.2.15)(vite@5.2.9(@types/node@20.11.24)))
-      '@sveltejs/kit':
-        specifier: ^2.0.0
-        version: 2.5.6(@sveltejs/vite-plugin-svelte@3.1.0(svelte@4.2.15)(vite@5.2.9(@types/node@20.11.24)))(svelte@4.2.15)(vite@5.2.9(@types/node@20.11.24))
-      '@sveltejs/vite-plugin-svelte':
-        specifier: ^3.0.0
-        version: 3.1.0(svelte@4.2.15)(vite@5.2.9(@types/node@20.11.24))
-      svelte:
-        specifier: ^4.2.7
-        version: 4.2.15
-      svelte-check:
-        specifier: ^3.6.0
-        version: 3.6.9(@babel/core@7.23.3)(postcss-load-config@4.0.2(postcss@8.4.38)(ts-node@10.9.1(@types/node@20.11.24)(typescript@5.3.3)))(postcss@8.4.38)(svelte@4.2.15)
-      tslib:
-        specifier: ^2.4.1
-        version: 2.6.2
-      typescript:
-        specifier: ^5.0.0
-        version: 5.3.3
-      vite:
-        specifier: ^5.0.3
-        version: 5.2.9(@types/node@20.11.24)
 
 packages:
 

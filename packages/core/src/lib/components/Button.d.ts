@@ -1,9 +1,10 @@
 /// <reference types="svelte" />
 import { SvelteComponentTyped } from 'svelte';
 
-interface ButtonProps {
-    text?: string;
-    onClick?: () => void;
+interface ButtonsProps {
+    countryCode?: string;
+    label?: string;
+    
 }
 
-export default class Button extends SvelteComponentTyped<ButtonProps> {}
+export default class Buttons extends SvelteComponentTyped<ButtonProps> {}
