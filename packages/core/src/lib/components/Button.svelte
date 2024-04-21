@@ -4,6 +4,6 @@
   export let label = 'Click me';
 </script>
 
-<button class="btn btn-primary" on:click={onClick}>
+<button class="btn btn-primary p-28" on:click={onClick}>
   {label}
 </button>

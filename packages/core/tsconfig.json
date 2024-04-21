@@ -9,5 +9,10 @@
       "@ticket-broker/ui/*": ["./packages/ui/src/lib/*"],
       "@ticket-broker/ui/styles": ["./packages/ui/src/lib/app.css"]
     }
-  }
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.svelte"
+  ]
 }

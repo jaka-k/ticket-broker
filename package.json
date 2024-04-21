@@ -10,8 +10,11 @@
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
-    "@ticket-broker/ui": "workspace:*",
     "prettier": "^3.2.5",
+    "daisyui": "^4.10.2",
+    "autoprefixer": "^10.4.19",
+    "postcss": "^8.4.38",
+    "tailwindcss": "^3.4.3",
     "turbo": "latest"
   },
   "packageManager": "pnpm@9.0.2"
