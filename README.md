@@ -1,4 +1,7 @@
 - 4 web apps that are consumer applications of the eslint config, tsconfig and ui library 
+- Was inteneded as a great showcase for RabbitMQ, but turned out to be a great example of monorepo usage as well
+- The communication between the 4 frontends and the server is an representing a real world challange of multi regional ticket vendors 
+
 
 # Turborepo starter
 

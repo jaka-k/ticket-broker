@@ -2,7 +2,7 @@ build:
 	@go build -o bin/server
 
 run: build
-	@./bin/server
+	@./bin/server -port=$(PORT)
 
 test:
 	@go test -v ./...

@@ -1,9 +1,13 @@
 package main
 
-import (
-	"log"
-)
+import "os"
 
 func main() {
-	log.Println("Running main()")
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "3000"
+	}
+
+	server := NewAPIServer(":" + port)
+	server.Run()
 }
