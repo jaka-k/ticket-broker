@@ -1,6 +1,12 @@
 - 4 web apps that are consumer applications of the eslint config, tsconfig and ui library 
 - Was inteneded as a great showcase for RabbitMQ, but turned out to be a great example of monorepo usage as well
 - The communication between the 4 frontends and the server is an representing a real world challange of multi regional ticket vendors 
+- Go server with Mux 
+- The 4 frontends are AMQP producer, where the Go server is an AMQP consumer
+- When a user clicks one of the buttons, the frontend application generates a message. This message contains the details about the number of tickets being bought (+10 or +100).
+- The Go server acts as a consumer in AMQP, an entity that connects to the message broker to receive messages and process them
+- RabbitMQ as a Broker inbetween
+- After processing the message, the server sends a confirmation back to the initial site (the frontend application) through RabbitMQ.
 
 
 # Turborepo starter

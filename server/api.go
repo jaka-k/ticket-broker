@@ -38,7 +38,7 @@ func (s *APIServer) handleCall(w http.ResponseWriter, r *http.Request) error {
 	if r.Method == "GET" {
 		return s.handleBuy(w, r)
 	}
-	if r.Method == "GET" {
+	if r.Method == "POST" {
 		return s.handleConfirm(w, r)
 	}
 
@@ -54,9 +54,9 @@ func (s *APIServer) handleBuy(w http.ResponseWriter, r *http.Request) error {
 func (s *APIServer) handleConfirm(w http.ResponseWriter, r *http.Request) error {
 	id := mux.Vars(r)["id"]
 
-	fmt.Println(id)
+	fmt.Printf("Some oneee with id %s", id)
 
-	return WriteJSON(w, http.StatusOK, "Some oneee")
+	return WriteJSON(w, http.StatusOK, "======")
 }
 
 func WriteJSON(w http.ResponseWriter, status int, v any) error {
