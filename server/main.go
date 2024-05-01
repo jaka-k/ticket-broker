@@ -2,10 +2,6 @@ package main
 
 import (
 	"fmt"
-	"log"
-	"os"
-
-	amqp "github.com/rabbitmq/amqp091-go"
 )
 
 func main() {
@@ -16,44 +12,38 @@ func main() {
 		return
 	}
 
-	if config.Environment == "dev" {
+	environment := config.Environment
+
+	if environment == "dev" {
 		fmt.Println("Running in development mode")
-	} else if config.Environment == "prod" {
+	} else if environment == "prod" {
 		fmt.Println("Running in production mode")
 	}
 
-	port := os.Getenv("PORT")
+	port := config.Port
 	if port == "" {
 		port = "3000"
 	}
 
-	server := NewAPIServer(":" + port)
-	server.Run()
-
-	amqp_address := config.AWSRabbitMQAMQP
-	if amqp_address != "" {
-		amqp_address = "amqp://guest:guest@localhost:5672"
+	amqpConfig := RabbitMQConfig{
+		Address: getRabbitMQAddress(config),
 	}
 
-	conn, err := amqp.Dial(amqp_address)
+	conn, ch, err := NewRabbitMQ(amqpConfig)
 	if err != nil {
-		log.Fatalf("Failed to connect to RabbitMQ: %v", err)
+		fmt.Printf("Failed to setup RabbitMQ: %v", err)
+		panic(err)
 	}
 	defer conn.Close()
-
-	ch, err := conn.Channel()
-	if err != nil {
-		log.Fatalf("Failed to open a channel: %v", err)
-	}
 	defer ch.Close()
 
-	consumer := NewConsumer(ch)
-	forever := make(chan bool)
+	server := NewAPIServer(":" + port)
+	server.Run()
+}
 
-	go func() {
-		consumer.Consume()
-	}()
-
-	fmt.Println(" [*] Waiting for messages. To exit press CTRL+C")
-	<-forever
+func getRabbitMQAddress(config *Config) string {
+	if config.AWSRabbitMQAMQP != "" || config.Environment == "dev" {
+		return "amqp://guest:guest@localhost:5672"
+	}
+	return config.AWSRabbitMQAMQP
 }
