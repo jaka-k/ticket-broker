@@ -8,6 +8,7 @@ import (
 )
 
 type Config struct {
+	Port            string
 	Environment     string
 	AWSRabbitMQUser string
 	AWSRabbitMQPass string
@@ -22,6 +23,7 @@ func LoadConfig() (*Config, error) {
 	}
 
 	return &Config{
+		Port:            os.Getenv("PORT"),
 		Environment:     os.Getenv("ENVIRONMENT"),
 		AWSRabbitMQUser: os.Getenv("AWSRABBITMQ_USER"),
 		AWSRabbitMQPass: os.Getenv("AWSRABBITMQ_PASS"),
