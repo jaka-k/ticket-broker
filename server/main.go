@@ -29,7 +29,7 @@ func main() {
 		Address: getRabbitMQAddress(config),
 	}
 
-	conn, ch, err := NewRabbitMQ(amqpConfig)
+	conn, ch, err := newRabbitMQSession(amqpConfig)
 	if err != nil {
 		fmt.Printf("Failed to setup RabbitMQ: %v", err)
 		panic(err)
@@ -37,7 +37,9 @@ func main() {
 	defer conn.Close()
 	defer ch.Close()
 
-	server := NewAPIServer(":" + port)
+	publisher := NewRabbitMQPublisher(ch)
+
+	server := NewAPIServer(":"+port, publisher)
 	server.Run()
 }
 

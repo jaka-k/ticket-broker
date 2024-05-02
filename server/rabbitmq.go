@@ -10,8 +10,7 @@ type RabbitMQConfig struct {
 	Address string
 }
 
-// NewRabbitMQ initializes and returns a RabbitMQ connection and a channel
-func NewRabbitMQ(cfg RabbitMQConfig) (*amqp.Connection, *amqp.Channel, error) {
+func newRabbitMQSession(cfg RabbitMQConfig) (*amqp.Connection, *amqp.Channel, error) {
 	conn, err := amqp.Dial(cfg.Address)
 	if err != nil {
 		log.Fatalf("Failed to connect to RabbitMQ: %v", err)

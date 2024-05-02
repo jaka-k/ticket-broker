@@ -9,13 +9,20 @@ import (
 	"github.com/gorilla/mux"
 )
 
+type OrderRequest struct {
+	id          string
+	countryCode string
+	orderAmount float32
+}
 type APIServer struct {
 	listenAddr string
+	publisher  *RabbitMQPublisher
 }
 
-func NewAPIServer(listenAddr string) *APIServer {
+func NewAPIServer(listenAddr string, publisher *RabbitMQPublisher) *APIServer {
 	return &APIServer{
 		listenAddr: listenAddr,
+		publisher:  publisher,
 	}
 
 }
