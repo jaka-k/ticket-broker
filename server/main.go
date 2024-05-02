@@ -43,6 +43,11 @@ func main() {
 
 	publisher := NewRabbitMQPublisher(ch)
 
+	queues := []string{"FranceQueue", "GermanyQueue", "GreatBritainQueue", "SpainQueue"}
+	for _, queue := range queues {
+		go startConsumer(ch, queue)
+	}
+
 	server := NewAPIServer(":"+port, publisher)
 	server.Run()
 }

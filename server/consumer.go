@@ -14,9 +14,9 @@ func NewConsumer(channel *amqp.Channel) *Consumer {
 	return &Consumer{channel: channel}
 }
 
-func (c *Consumer) Consume() {
+func (c *Consumer) Consume(queueName string) error {
 	msgs, err := c.channel.Consume(
-		"TestQueue",
+		queueName,
 		"",
 		true,
 		false,
@@ -26,10 +26,20 @@ func (c *Consumer) Consume() {
 	)
 	if err != nil {
 		fmt.Printf("Failed to register a consumer: %v\n", err)
-		return
+		return err
 	}
 
 	for d := range msgs {
 		fmt.Printf("Received Message: %s\n", d.Body)
 	}
+	return nil
+}
+
+func startConsumer(ch *amqp.Channel, queue string) {
+	consumer := NewConsumer(ch)
+
+	if err := consumer.Consume(queue); err != nil {
+		fmt.Printf("Failed to start consumer for queue %s: %v", queue, err)
+	}
+
 }

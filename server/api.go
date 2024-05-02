@@ -75,7 +75,7 @@ func (s *APIServer) handleBuy(w http.ResponseWriter, r *http.Request) error {
 		return fmt.Errorf("forbidden country code %s", req.CountryCode)
 	}
 
-	s.publisher.PublishMessage(queue, []byte("success"))
+	s.publisher.PublishMessage(queue, []byte(req.ID))
 
 	fmt.Println(r)
 	return WriteJSON(w, http.StatusOK, "Some oneee")
