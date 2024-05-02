@@ -25,3 +25,21 @@ func newRabbitMQSession(cfg RabbitMQConfig) (*amqp.Connection, *amqp.Channel, er
 
 	return conn, ch, nil
 }
+
+func setupQueues(ch *amqp.Channel) error {
+	queues := []string{"FranceQueue", "GermanyQueue", "GreatBritainQueue", "SpainQueue"}
+	for _, queueName := range queues {
+		_, err := ch.QueueDeclare(
+			queueName,
+			true,
+			false,
+			false,
+			false,
+			nil,
+		)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}

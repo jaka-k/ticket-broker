@@ -10,13 +10,21 @@ import (
 )
 
 type OrderRequest struct {
-	id          string
-	countryCode string
-	orderAmount float32
+	ID          string  `json:"id"`
+	CountryCode string  `json:"countryCode"`
+	OrderAmount float32 `json:"orderAmount"`
 }
+
 type APIServer struct {
 	listenAddr string
 	publisher  *RabbitMQPublisher
+}
+
+var AllowedCountries = map[string]string{
+	"fr": "FranceQueue",
+	"de": "GermanyQueue",
+	"gb": "GreatBritainQueue",
+	"es": "SpainQueue",
 }
 
 func NewAPIServer(listenAddr string, publisher *RabbitMQPublisher) *APIServer {
@@ -53,6 +61,21 @@ func (s *APIServer) handleCall(w http.ResponseWriter, r *http.Request) error {
 }
 
 func (s *APIServer) handleBuy(w http.ResponseWriter, r *http.Request) error {
+	var req OrderRequest
+	err := json.NewDecoder(r.Body).Decode(&req)
+
+	if err != nil {
+		http.Error(w, "Invalid request body", http.StatusBadRequest)
+		return fmt.Errorf("error decoding request body: %v", err)
+	}
+
+	queue, ok := AllowedCountries[req.CountryCode]
+	if !ok {
+		http.Error(w, "Forbidden country code", http.StatusForbidden)
+		return fmt.Errorf("forbidden country code %s", req.CountryCode)
+	}
+
+	s.publisher.PublishMessage(queue, []byte("success"))
 
 	fmt.Println(r)
 	return WriteJSON(w, http.StatusOK, "Some oneee")

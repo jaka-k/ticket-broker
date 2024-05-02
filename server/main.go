@@ -37,6 +37,10 @@ func main() {
 	defer conn.Close()
 	defer ch.Close()
 
+	if err := setupQueues(ch); err != nil {
+		fmt.Printf("Failed to declare queues: %v", err)
+	}
+
 	publisher := NewRabbitMQPublisher(ch)
 
 	server := NewAPIServer(":"+port, publisher)
