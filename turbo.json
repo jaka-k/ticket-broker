@@ -1,15 +1,20 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "globalDependencies": ["**/.env.*local", "packages/server/go.mod", "packages/server/go.sum"],
+  "globalDependencies": ["**/.env.*local", "server/go.mod", "server/go.sum"],
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": [".svelte-kit/**", "./server/bin/**"],
-      "env": [ "TURBO_FILTER=!@ticket-broker/core"]
+      "outputs": [".svelte-kit/**", "server/bin/**"],
+      "env": ["TURBO_FILTER=!@ticket-broker/core"]
     },
     "server:build": {
       "cache": false,
-      "outputs": ["./server/bin/**"]
+      "outputs": ["server/bin/**"]
+    },
+    "server:dev": {
+      "persistent": true,
+      "cache": false,
+      "outputs": []
     },
     "server:test": {
       "dependsOn": ["server:build"],
@@ -20,10 +25,10 @@
       "outputs": []
     },
     "dev": {
-      "cache": false,
+      "dependsOn": ["server:dev", "^dev"],
       "persistent": true,
+      "cache": false,
       "env": ["NODE_ENV=development"]
-      }
     }
   }
-
+}
