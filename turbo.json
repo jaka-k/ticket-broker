@@ -11,8 +11,15 @@
       "cache": false,
       "outputs": ["server/bin/**"]
     },
+    "server:start-rabbitmq": {
+      "persistent": true,
+      "cache": false,
+      "dependsOn": [],
+      "outputs": []
+    },
     "server:dev": {
       "persistent": true,
+      "dependsOn": ["server:start-rabbitmq"],
       "cache": false,
       "outputs": []
     },

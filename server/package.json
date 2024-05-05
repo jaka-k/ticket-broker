@@ -1,7 +1,0 @@
-{
-  "name": "@ticket-broker/server",
-       "scripts": {
-      "dev": "AIR_CONFIG='.air.unix.toml' || set AIR_CONFIG=.air.windows.toml && air"
-    }
-  }
-  
