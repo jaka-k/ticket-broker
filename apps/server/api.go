@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
+	"github.com/rs/cors"
 )
 
 type OrderRequest struct {
@@ -38,21 +39,36 @@ func NewAPIServer(listenAddr string, publisher *RabbitMQPublisher) *APIServer {
 func (s *APIServer) Run() {
 	router := mux.NewRouter()
 
-	router.HandleFunc("/buy", makeHTTPHandleFunc(s.handleCall))
-	router.HandleFunc("/buy/{id}", makeHTTPHandleFunc(s.handleCall))
+	router.HandleFunc("/buy", makeHTTPHandleFunc(s.handleBuyCall))
+	router.HandleFunc("/confirm", makeHTTPHandleFunc(s.handleConfirmCall))
+
+	corsMiddleware := cors.New(cors.Options{
+		AllowedOrigins:   []string{"*"},
+		AllowedMethods:   []string{"GET", "POST"},
+		AllowedHeaders:   []string{"Content-Type", "Authorization"},
+		AllowCredentials: true,
+	})
+
+	handler := corsMiddleware.Handler(router)
+	log.Println(handler)
 
 	log.Println("JSON API server running on port" + s.listenAddr + "\nhttp://localhost" + s.listenAddr)
 
-	err := http.ListenAndServe(s.listenAddr, router)
+	err := http.ListenAndServe(s.listenAddr, handler)
 	if err != nil {
 		log.Fatalf("Failed to start server: %v", err)
 	}
 }
 
-func (s *APIServer) handleCall(w http.ResponseWriter, r *http.Request) error {
-	if r.Method == "GET" {
+func (s *APIServer) handleBuyCall(w http.ResponseWriter, r *http.Request) error {
+	if r.Method == "POST" {
 		return s.handleBuy(w, r)
 	}
+
+	return fmt.Errorf("method now allowed %v", r.Method)
+}
+
+func (s *APIServer) handleConfirmCall(w http.ResponseWriter, r *http.Request) error {
 	if r.Method == "POST" {
 		return s.handleConfirm(w, r)
 	}
@@ -63,7 +79,6 @@ func (s *APIServer) handleCall(w http.ResponseWriter, r *http.Request) error {
 func (s *APIServer) handleBuy(w http.ResponseWriter, r *http.Request) error {
 	var req OrderRequest
 	err := json.NewDecoder(r.Body).Decode(&req)
-
 	if err != nil {
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
 		return fmt.Errorf("error decoding request body: %v", err)
@@ -77,16 +92,14 @@ func (s *APIServer) handleBuy(w http.ResponseWriter, r *http.Request) error {
 
 	s.publisher.PublishMessage(queue, []byte(req.ID))
 
-	fmt.Println(r)
-	return WriteJSON(w, http.StatusOK, "Some oneee")
+	log.Printf("Received a buy request for ID: %s from country: %s", req.ID, req.CountryCode)
+	return WriteJSON(w, http.StatusOK, "Buy request received")
 }
 
 func (s *APIServer) handleConfirm(w http.ResponseWriter, r *http.Request) error {
 	id := mux.Vars(r)["id"]
-
-	fmt.Printf("Some oneee with id %s", id)
-
-	return WriteJSON(w, http.StatusOK, "======")
+	log.Printf("Received a confirmation for ID: %s", id)
+	return WriteJSON(w, http.StatusOK, "Confirmation received")
 }
 
 func WriteJSON(w http.ResponseWriter, status int, v any) error {
