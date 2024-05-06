@@ -8,6 +8,54 @@
 - RabbitMQ as a Broker inbetween
 - After processing the message, the server sends a confirmation back to the initial site (the frontend application) through RabbitMQ.
 
+- I wanted the repo to be able to run withouth complete dockerization, with mostly turbo running everything except the rabbitmq image that is needed for the server
+
+
+4 Web Apps for Ticket Booking:
+- Each app represents a consumer application for different countries (France, Germany, Great Britain, Spain).
+- The applications use shared configuration and UI components, demonstrating efficient code reuse in a monorepo setup.
+
+Monorepo with Turborepo:
+- The project showcases an effective monorepo setup using Turborepo for managing multiple interconnected projects.
+- The monorepo contains common configurations (ESLint, TypeScript), shared UI components, and individual applications for each country.
+
+RabbitMQ for Messaging:
+- RabbitMQ serves as the message broker between the frontends and the server, representing a real-world multi-regional ticket vendor system.
+-The communication flow demonstrates an example of AMQP usage, with the frontends acting as producers and the server as a consumer.
+
+Go Server with Mux:
+- The server is implemented in Go using the Gorilla Mux router for handling HTTP requests.
+- It processes messages from the RabbitMQ broker and sends confirmations back to the relevant frontend.
+
+Consumer Setup:
+- RabbitMQ queues are declared during server startup, ensuring necessary infrastructure is set up before processing begins.
+- Utilizes concurrent processing through goroutines for efficient consumer initialization.
+- The server processes messages based on the country code provided, and dispatches them to different queues accordingly.
+
+Handling Ticket Purchases:
+- When a user clicks one of the buttons on the frontend, a message is generated detailing the number of tickets being bought.
+- The server processes these messages and sends confirmations back to the appropriate frontend.
+
+Data Flow:
+- The frontends send API requests to the Go server.
+- The server validates and processes these requests, forwarding the messages to RabbitMQ.
+- RabbitMQ distributes the messages to the appropriate queues for each country.
+
+Fairness in Message Handling:
+- The RabbitMQ broker ensures that ticket purchase requests are fairly distributed among the different countries, avoiding one country monopolizing the tickets.
+
+
+// Todo:
+
+Confirmation Workflow:
+After processing the message, the server sends a confirmation message back to the originating frontend application.
+The confirmation is sent through RabbitMQ, maintaining the asynchronous, decoupled communication flow.
+
+Error Handling:
+- The server includes robust error handling, providing clear feedback and maintaining consistent logging for monitoring purposes.
+Logging and Monitoring:
+- The Go server logs key actions and errors, aiding in debugging and monitoring the application’s health.
+
 
 # Turborepo starter
 
