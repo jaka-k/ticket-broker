@@ -1,26 +1,20 @@
-import { writable } from "svelte/store";
+import { writable } from 'svelte/store';
 
-type Status = 'pending' | 'success' | 'rejected';
 
-type Order = {
-  id: string;
-  countryCode: string;
-  orderAmount: number;
-  status: Status
-};
+const orders = writable<Order[]>([]);
+const { subscribe, set, update } = orders
 
-const { subscribe, set, update } = writable<Order[]>([]);
 
-function createOrder(id: string, countryCode: string, orderAmount: number, status: Order['status']): Order {
+function createOrder({ id, countryCode, orderAmount, status }: Order) {
   update((currentOrders: Order[]) => {
-    const newOrder: Order = { id, countryCode, orderAmount, status }
-    return [...currentOrders, newOrder]
-})
+    const newOrder: Order = { id, countryCode, orderAmount, status };
+    return [...currentOrders, newOrder];
+  });
 }
 
 export function updateOrderStatus(orderID: string, newStatus: Status) {
-  update(allOrders => {
-    const index: number = allOrders.findIndex(order => order.id === orderID);
+  update((allOrders) => {
+    const index: number = allOrders.findIndex((order) => order.id === orderID);
     const order = allOrders[index];
 
     if (!order) {
@@ -33,22 +27,23 @@ export function updateOrderStatus(orderID: string, newStatus: Status) {
         id: order.id,
         countryCode: order.countryCode,
         orderAmount: order.orderAmount,
-        status: newStatus
+        status: newStatus,
       };
-      return allOrders.map((order, idx) => idx === index ? updatedOrder : order);
+      return allOrders.map((order, idx) =>
+        idx === index ? updatedOrder : order
+      );
     }
     return allOrders;
   });
 }
 
-
 function createOrderStore() {
+  return {
+    subscribe,
+    logApiCall: (order: Order) => createOrder(order),
+    updateOrderStatus,
+    reset: () => set([]),
+  };
+}
 
-    return {
-      subscribe,
-      logApiCall: (order: Order) => update((orders) => [...orders, order]),
-      reset: () => set([])
-    };
-  }
-  
-  export const orderStore = createOrderStore();
+export const orderStore = createOrderStore();

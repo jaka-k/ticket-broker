@@ -1,8 +1,12 @@
 <script lang="ts">
-    import { Buttons } from '@ticket-broker/core';
+    import { Buttons, DynamicList } from '@ticket-broker/core';
   
   </script>
   
-  <Buttons countryCode={"de"}  label={'Eintrittskarten'} />
+  <div class="">
+    <Buttons countryCode={"de"}  label={'Eintrittskarten'} />
+    <DynamicList />
+  </div>
+  
   
   
