@@ -1,4 +1,4 @@
-module ticket-broker
+module "github.com/jaka-k/apps/server/ticket-broker"
 
 go 1.22.2
 

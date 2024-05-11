@@ -2,11 +2,15 @@ package main
 
 import (
 	"fmt"
+
+	"github.com/jaka-k/apps/server/ticket-broker/api"
+	"github.com/jaka-k/apps/server/ticket-broker/config"
+	"github.com/jaka-k/apps/server/ticket-broker/rabbitmq"
 )
 
 func main() {
 
-	config, err := LoadConfig()
+	config, err := config.LoadConfig()
 	if err != nil {
 		fmt.Println("Failed to load config:", err)
 		return
@@ -25,11 +29,11 @@ func main() {
 		port = "3000"
 	}
 
-	amqpConfig := RabbitMQConfig{
+	amqpConfig := rabbitmq.RabbitMQConfig{
 		Address: getRabbitMQAddress(config),
 	}
 
-	conn, ch, err := newRabbitMQSession(amqpConfig)
+	conn, ch, err := rabbitmq.NewRabbitMQSession(amqpConfig)
 	if err != nil {
 		fmt.Printf("Failed to setup RabbitMQ: %v", err)
 		panic(err)
@@ -37,22 +41,22 @@ func main() {
 	defer conn.Close()
 	defer ch.Close()
 
-	if err := setupQueues(ch); err != nil {
+	if err := rabbitmq.SetupQueues(ch); err != nil {
 		fmt.Printf("Failed to declare queues: %v", err)
 	}
 
-	publisher := NewRabbitMQPublisher(ch)
+	publisher := rabbitmq.NewRabbitMQPublisher(ch)
 
 	queues := []string{"FranceQueue", "GermanyQueue", "GreatBritainQueue", "SpainQueue"}
 	for _, queue := range queues {
-		go startConsumer(ch, queue)
+		go rabbitmq.StartConsumer(ch, queue)
 	}
 
-	server := NewAPIServer(":"+port, publisher)
+	server := api.NewAPIServer(":"+port, publisher)
 	server.Run()
 }
 
-func getRabbitMQAddress(config *Config) string {
+func getRabbitMQAddress(config *config.Config) string {
 	if config.AWSRabbitMQAMQP != "" || config.Environment == "dev" {
 		return "amqp://guest:guest@localhost:5672"
 	}

@@ -1,4 +1,4 @@
-package main
+package api
 
 import (
 	"encoding/json"
@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
+	"github.com/jaka-k/apps/server/ticket-broker/rabbitmq"
 	"github.com/rs/cors"
 )
 
@@ -18,7 +19,7 @@ type OrderRequest struct {
 
 type APIServer struct {
 	listenAddr string
-	publisher  *RabbitMQPublisher
+	publisher  *rabbitmq.RabbitMQPublisher
 }
 
 var AllowedCountries = map[string]string{
@@ -28,7 +29,7 @@ var AllowedCountries = map[string]string{
 	"es": "SpainQueue",
 }
 
-func NewAPIServer(listenAddr string, publisher *RabbitMQPublisher) *APIServer {
+func NewAPIServer(listenAddr string, publisher *rabbitmq.RabbitMQPublisher) *APIServer {
 	return &APIServer{
 		listenAddr: listenAddr,
 		publisher:  publisher,

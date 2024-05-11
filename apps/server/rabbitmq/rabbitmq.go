@@ -1,4 +1,4 @@
-package main
+package rabbitmq
 
 import (
 	"log"
@@ -10,7 +10,7 @@ type RabbitMQConfig struct {
 	Address string
 }
 
-func newRabbitMQSession(cfg RabbitMQConfig) (*amqp.Connection, *amqp.Channel, error) {
+func NewRabbitMQSession(cfg RabbitMQConfig) (*amqp.Connection, *amqp.Channel, error) {
 	conn, err := amqp.Dial(cfg.Address)
 	if err != nil {
 		log.Fatalf("Failed to connect to RabbitMQ: %v", err)
@@ -26,7 +26,7 @@ func newRabbitMQSession(cfg RabbitMQConfig) (*amqp.Connection, *amqp.Channel, er
 	return conn, ch, nil
 }
 
-func setupQueues(ch *amqp.Channel) error {
+func SetupQueues(ch *amqp.Channel) error {
 	queues := []string{"FranceQueue", "GermanyQueue", "GreatBritainQueue", "SpainQueue"}
 	for _, queueName := range queues {
 		_, err := ch.QueueDeclare(

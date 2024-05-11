@@ -1,4 +1,4 @@
-package main
+package rabbitmq
 
 import (
 	"fmt"
@@ -35,7 +35,7 @@ func (c *Consumer) Consume(queueName string) error {
 	return nil
 }
 
-func startConsumer(ch *amqp.Channel, queue string) {
+func StartConsumer(ch *amqp.Channel, queue string) {
 	consumer := NewConsumer(ch)
 
 	if err := consumer.Consume(queue); err != nil {
