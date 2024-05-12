@@ -10,6 +10,7 @@
 
 - I wanted the repo to be able to run withouth complete dockerization, with mostly turbo running everything except the rabbitmq image that is needed for the server
 
+- The go server serves as a gateway service and a processing service at the same time as its a poc project (in real life project this would be decoupled)
 
 4 Web Apps for Ticket Booking:
 - Each app represents a consumer application for different countries (France, Germany, Great Britain, Spain).
@@ -26,6 +27,8 @@ RabbitMQ for Messaging:
 Go Server with Mux:
 - The server is implemented in Go using the Gorilla Mux router for handling HTTP requests.
 - It processes messages from the RabbitMQ broker and sends confirmations back to the relevant frontend.
+
+Live Reload Development: Configured the Go server for live reloading using Air, enhancing developer experience by enabling immediate feedback during development.
 
 Consumer Setup:
 - RabbitMQ queues are declared during server startup, ensuring necessary infrastructure is set up before processing begins.

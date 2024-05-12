@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/jaka-k/apps/server/ticket-broker/api"
 	"github.com/jaka-k/apps/server/ticket-broker/config"
@@ -29,31 +30,22 @@ func main() {
 		port = "3000"
 	}
 
-	amqpConfig := rabbitmq.RabbitMQConfig{
-		Address: getRabbitMQAddress(config),
-	}
-
-	conn, ch, err := rabbitmq.NewRabbitMQSession(amqpConfig)
+	rabbitMQService, err := initializeRabbitMQ(config)
 	if err != nil {
-		fmt.Printf("Failed to setup RabbitMQ: %v", err)
-		panic(err)
-	}
-	defer conn.Close()
-	defer ch.Close()
-
-	if err := rabbitmq.SetupQueues(ch); err != nil {
-		fmt.Printf("Failed to declare queues: %v", err)
+		log.Fatalf("Failed to initialize RabbitMQ service: %v", err)
 	}
 
-	publisher := rabbitmq.NewRabbitMQPublisher(ch)
-
-	queues := []string{"FranceQueue", "GermanyQueue", "GreatBritainQueue", "SpainQueue"}
-	for _, queue := range queues {
-		go rabbitmq.StartConsumer(ch, queue)
-	}
-
-	server := api.NewAPIServer(":"+port, publisher)
+	server := api.NewAPIServer(":"+port, rabbitMQService)
 	server.Run()
+}
+
+func initializeRabbitMQ(cfg *config.Config) (rabbitmq.Service, error) {
+	address := getRabbitMQAddress(cfg)
+	amqpConfig := rabbitmq.Config{
+		Address: address,
+	}
+
+	return rabbitmq.NewService(amqpConfig)
 }
 
 func getRabbitMQAddress(config *config.Config) string {

@@ -1,5 +1,5 @@
 build:
-	@go build cmd/main -o bin/server
+	@go build -o bin/server ./cmd
 
 run: build
 	@./bin/server -port=$(PORT)

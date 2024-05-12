@@ -6,17 +6,24 @@ import (
 	amqp "github.com/rabbitmq/amqp091-go"
 )
 
-type RabbitMQPublisher struct {
+type Publisher struct {
 	channel *amqp.Channel
 }
 
-func NewRabbitMQPublisher(ch *amqp.Channel) *RabbitMQPublisher {
-	return &RabbitMQPublisher{channel: ch}
+func NewPublisher(ch *amqp.Channel) *Publisher {
+	return &Publisher{channel: ch}
 }
 
-func (r *RabbitMQPublisher) PublishMessage(queue string, msg []byte) error {
-	return r.channel.PublishWithContext(context.TODO(), "", queue, false, false, amqp.Publishing{
-		ContentType: "text/plain",
-		Body:        msg,
-	})
+func (p *Publisher) PublishMessage(queueName, message string) error {
+	return p.channel.PublishWithContext(
+		context.TODO(),
+		"",        // exchange
+		queueName, // routing key
+		false,     // mandatory
+		false,     // immediate
+		amqp.Publishing{
+			ContentType: "text/plain",
+			Body:        []byte(message),
+		},
+	)
 }
