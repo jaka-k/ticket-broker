@@ -34,6 +34,8 @@ func (s *APIServer) Run() {
 	router.HandleFunc("/buy", makeHTTPHandleFunc(s.handleBuyCall)).Methods("POST")
 	router.HandleFunc("/confirm", makeHTTPHandleFunc(s.handleConfirmCall)).Methods("POST")
 
+	http.HandleFunc("/ws", OrderStatusHandler)
+
 	corsMiddleware := cors.New(cors.Options{
 		AllowedOrigins:   []string{"*"},
 		AllowedMethods:   []string{"GET", "POST"},
