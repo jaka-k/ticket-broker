@@ -12,9 +12,9 @@ import (
 )
 
 type OrderRequest struct {
-	ID          string  `json:"id"`
-	CountryCode string  `json:"countryCode"`
-	OrderAmount float32 `json:"orderAmount"`
+	ID           string  `json:"id"`
+	CountryCode  string  `json:"countryCode"`
+	NumOfTickets float32 `json:"numOfTickets"`
 }
 
 type APIServer struct {

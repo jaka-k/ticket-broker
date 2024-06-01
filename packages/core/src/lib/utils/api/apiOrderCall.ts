@@ -12,9 +12,9 @@ export const apiOrderCall = async ({
   fetch(url, {
     method: 'POST',
     body: JSON.stringify({
-      id: id,
+      id,
       countryCode: origin,
-      orderAmount: numOfTickets,
+      numOfTickets,
     }),
     headers: {
       'Content-Type': 'application/json',
