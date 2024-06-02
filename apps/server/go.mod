@@ -1,4 +1,4 @@
-module "github.com/jaka-k/apps/server/ticket-broker"
+module github.com/jaka-k/apps/server/ticket-broker
 
 go 1.22.2
 
@@ -7,4 +7,9 @@ require (
 	github.com/joho/godotenv v1.5.1
 	github.com/rabbitmq/amqp091-go v1.9.0
 	github.com/rs/cors v1.11.0
+)
+
+require (
+	github.com/gorilla/websocket v1.5.1 // indirect
+	golang.org/x/net v0.17.0 // indirect
 )

@@ -34,7 +34,7 @@ func (s *APIServer) Run() {
 	router.HandleFunc("/buy", makeHTTPHandleFunc(s.handleBuyCall)).Methods("POST")
 	router.HandleFunc("/confirm", makeHTTPHandleFunc(s.handleConfirmCall)).Methods("POST")
 
-	http.HandleFunc("/ws", OrderStatusHandler)
+	http.HandleFunc("/ws", s.OrderStatusHandler)
 
 	corsMiddleware := cors.New(cors.Options{
 		AllowedOrigins:   []string{"*"},
@@ -44,7 +44,7 @@ func (s *APIServer) Run() {
 	})
 
 	handler := corsMiddleware.Handler(router)
-	log.Println("JSON API server running on", s.listenAddr)
+	log.Println("Go Mux server running on", s.listenAddr)
 	log.Fatal(http.ListenAndServe(s.listenAddr, handler))
 }
 
